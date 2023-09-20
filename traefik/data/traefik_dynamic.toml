@@ -1,0 +1,15 @@
+[http.middlewares.simpleAuth.basicAuth]
+  #Replace <user:hached_password> with the credentials you want to connect to the traefik interface. 
+  #You can use the following command to generate a hashed password (requires apache2-utils to be installed):
+  #htpasswd -nb <user> <password>
+  users = [
+    "user:hashed_password"
+  ]
+
+[http.routers.api]
+  rule = "Host(`monitor.your_domain`)" #Replace it with your domain
+  entrypoints = ["websecure"]
+  middlewares = ["simpleAuth"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
